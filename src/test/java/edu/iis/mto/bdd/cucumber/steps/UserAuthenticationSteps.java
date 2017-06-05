@@ -5,22 +5,20 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import edu.iis.mto.bdd.cucumber.pages.HomePage;
-import edu.iis.mto.bdd.cucumber.pages.LoginPage;
+import edu.iis.mto.bdd.cucumber.workflowsteps.AuthenticationWorkFlowSteps;
 import edu.iis.mto.bdd.model.FrequentFlyerMember;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
-
 public class UserAuthenticationSteps {
 
     private WebDriver driver;
+    private AuthenticationWorkFlowSteps authenticationWorkFlowSteps;
 
     @Before
     public void init() {
         driver = new FirefoxDriver();
+        authenticationWorkFlowSteps = new AuthenticationWorkFlowSteps(driver);
     }
 
     @Given("^(.*) is a registered Frequent Flyer$")
@@ -28,22 +26,17 @@ public class UserAuthenticationSteps {
 
     @When("^(.*) authenticates with a valid email address and password$")
     public void whenAUserAuthenticatesWithAValidEmailAddressAndPassword(FrequentFlyerMember user) {
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.getLoginSite("http://localhost:8080/#/welcome");
-        loginPage.logIn(user);
+        authenticationWorkFlowSteps.signInWithCreditialsFor(user);
     }
 
     @Then("^(.*) should be given access to (?:her|his) account$")
     public void thenTheUserShouldBeGivenAccessToAccount(FrequentFlyerMember user) {
-        HomePage homePage = new HomePage(driver);
-        assertThat(homePage.getWelcomeMessage(), equalTo("Witaj " + user.getFirstName()));
+        authenticationWorkFlowSteps.verifyWelcomeMessageFor(user);
     }
 
     @Given("^(.*) has logged on$")
     public void aUserHasLoggedOnAs(FrequentFlyerMember user) {
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.getLoginSite("http://localhost:8080/#/welcome");
-        loginPage.logIn(user);
+        authenticationWorkFlowSteps.signInWithCreditialsFor(user);
     }
 
     @When("^(?:.*) views the home page$")
