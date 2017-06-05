@@ -26,7 +26,7 @@ public class UserAuthenticationSteps {
     public void givenARegisteredFrequentFlyer(String userEmail) {}
 
     @When("^(.*) authenticates with a valid email address and password$")
-    public void whenJaneAuthenticatesWithAValidEmailAddressAndPassword(FrequentFlyerMember user) {
+    public void whenAUserAuthenticatesWithAValidEmailAddressAndPassword(FrequentFlyerMember user) {
         driver.get("http://localhost:8080/#/welcome");
         driver.findElement(By.name("email")).sendKeys(user.getEmail());
         driver.findElement(By.name("password")).sendKeys(user.getPassword());
