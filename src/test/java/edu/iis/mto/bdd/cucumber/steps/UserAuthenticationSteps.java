@@ -5,6 +5,7 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import edu.iis.mto.bdd.cucumber.pages.HomePage;
 import edu.iis.mto.bdd.model.FrequentFlyerMember;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -35,7 +36,9 @@ public class UserAuthenticationSteps {
 
     @Then("^(.*) should be given access to (?:her|his) account$")
     public void thenTheUserShouldBeGivenAccessToAccount(FrequentFlyerMember userName) {
-        assertThat(driver.findElement(By.id("welcome-message")).getText(), equalTo("Witaj " + userName.getFirstName()));
+        HomePage homePage = new HomePage(driver);
+
+        assertThat(homePage.getWelcomeMessage(), equalTo("Witaj " + userName.getFirstName()));
     }
 
     @Given("^(.*) has logged on$")
