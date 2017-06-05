@@ -8,7 +8,6 @@ import cucumber.api.java.en.When;
 import edu.iis.mto.bdd.cucumber.pages.HomePage;
 import edu.iis.mto.bdd.cucumber.pages.LoginPage;
 import edu.iis.mto.bdd.model.FrequentFlyerMember;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
@@ -29,17 +28,15 @@ public class UserAuthenticationSteps {
 
     @When("^(.*) authenticates with a valid email address and password$")
     public void whenAUserAuthenticatesWithAValidEmailAddressAndPassword(FrequentFlyerMember user) {
-        driver.get("http://localhost:8080/#/welcome");
-        driver.findElement(By.name("email")).sendKeys(user.getEmail());
-        driver.findElement(By.name("password")).sendKeys(user.getPassword());
-        driver.findElement(By.name("signin")).click();
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.getLoginSite("http://localhost:8080/#/welcome");
+        loginPage.logIn(user);
     }
 
     @Then("^(.*) should be given access to (?:her|his) account$")
-    public void thenTheUserShouldBeGivenAccessToAccount(FrequentFlyerMember userName) {
+    public void thenTheUserShouldBeGivenAccessToAccount(FrequentFlyerMember user) {
         HomePage homePage = new HomePage(driver);
-
-        assertThat(homePage.getWelcomeMessage(), equalTo("Witaj " + userName.getFirstName()));
+        assertThat(homePage.getWelcomeMessage(), equalTo("Witaj " + user.getFirstName()));
     }
 
     @Given("^(.*) has logged on$")
