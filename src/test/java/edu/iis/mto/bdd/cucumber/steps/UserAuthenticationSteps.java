@@ -6,6 +6,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import edu.iis.mto.bdd.cucumber.pages.HomePage;
+import edu.iis.mto.bdd.cucumber.pages.LoginPage;
 import edu.iis.mto.bdd.model.FrequentFlyerMember;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -43,10 +44,9 @@ public class UserAuthenticationSteps {
 
     @Given("^(.*) has logged on$")
     public void aUserHasLoggedOnAs(FrequentFlyerMember user) {
-        driver.get("http://localhost:8080/#/welcome");
-        driver.findElement(By.name("email")).sendKeys(user.getEmail());
-        driver.findElement(By.name("password")).sendKeys(user.getPassword());
-        driver.findElement(By.name("signin")).click();
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.getLoginSite("http://localhost:8080/#/welcome");
+        loginPage.logIn(user);
     }
 
     @When("^(?:.*) views the home page$")
